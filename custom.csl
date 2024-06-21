@@ -149,7 +149,6 @@
     <layout delimiter=", ">
       <group delimiter=" ">
         <text macro="author" suffix="."/>
-        <text macro="title" suffix="."/>
         <choose>
           <if type="chapter paper-conference" match="any">
             <text term="in"/>

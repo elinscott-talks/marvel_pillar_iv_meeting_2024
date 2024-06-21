@@ -127,7 +127,7 @@
   (self.methods.touying-slide)(self: self, repeat: none, align(horizon, body))
 }
 
-#let matrix-slide(self: none, columns: none, rows: none, background-color: none, gutter: 5pt, stroke: none, ..bodies) = {
+#let matrix-slide(self: none, columns: none, rows: none, background-color: none, gutter: 5pt, stroke: none, alignment: none, ..bodies) = {
   self = utils.empty-page(self)
 
   let footer(self) = {
@@ -176,11 +176,18 @@
       panic("number of rows (" + str(num-rows) + ") * number of columns (" + str(num-cols) + ") must at least be number of content arguments (" + str(bodies.len()) + ")")
     }
     let cart-idx(i) = (calc.quo(i, num-cols), calc.rem(i, num-cols))
+
+    let alignment = if alignment == none {
+      left + horizon
+    } else {
+      alignment
+    }
+
     let color-body(idx-body) = {
       let (idx, body) = idx-body
       let (row, col) = cart-idx(idx)
       let color = if calc.even(row + col) { white } else { background-color }
-      set align(center + horizon)
+      set align(alignment)
       rect(inset: .5em, width: 100%, height: 100%, fill: color, stroke: stroke, body)
     }
     let content = grid(
@@ -283,7 +290,8 @@
   self.methods.init = (self: none, body) => {
     set text(size: 20pt)
     set heading(outlined: false)
-    show footnote.entry: set text(size: .6em)
+    show footnote.entry: set text(size: .6em, fill: self.colors.neutral)
+    set footnote.entry(separator: none, indent: 0em)
     body
   }
 

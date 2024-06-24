@@ -97,8 +97,8 @@ For more details, go to `koopmans-functionals.org`
 #matrix-slide(title: "Making Koopmans functionals accessible")[
   #image("figures/black_box_filled_square.png")
 ][
-  #pause
-  + automated Wannerisation #pause
+
+  + #pause automated Wannerisation #pause
   + calculating the screening parameters via machine learning #pause
   + integration with `AiiDA`
 ]

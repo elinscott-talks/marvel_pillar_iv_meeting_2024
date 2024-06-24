@@ -88,7 +88,7 @@ Powerful but complex:
 
 An ongoing effort to make Koopmans functional calculations straightforward for non-experts@Linscott2023
 
-- straightforward installation
+- easy installation
 - automated workflows
 - minimal input required of the user #pause
 
@@ -97,6 +97,7 @@ For more details, go to `koopmans-functionals.org`
 #matrix-slide(title: "Making Koopmans functionals accessible")[
   #image("figures/black_box_filled_square.png")
 ][
+  #pause
   + automated Wannerisation #pause
   + calculating the screening parameters via machine learning #pause
   + integration with `AiiDA`
@@ -212,8 +213,8 @@ $
   #align(
     center + horizon,
     image(
-      "figures/convergence_analysis_side_by_side.svg",
-      width: 100%,
+      "figures/convergence_analysis_Eg_only.svg",
+      height: 70%,
     ) + "accurate to within " + $cal("O")$ + "(10 meV) " + emph("cf.") + " typical band gap accuracy of " + $cal("O")$ + "(100 meV)",
   )
   #blcite(<Schubert2024>)

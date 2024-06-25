@@ -16,8 +16,7 @@
   references: [references.bib],
 )
 #let blcite(reference) = {
-  set text(white)
-  cite(reference)
+  text(fill: white, cite(reference))
 }
 
 #set footnote.entry(clearance: 0em)
@@ -38,15 +37,6 @@
   matrix-slide,
 ) = utils.slides(s)
 #show: slides
-
-== Outline
-- a brief recap of Koopmans functionals and the `koopmans` code
-- recent progress making `koopmans` friendlier
-  - automated Wannierisation
-  - screening via machine learning
-  - integration with `AiiDA`
-
-= Koopmans functionals
 
 == A powerful tool for computational spectroscopy
 
@@ -90,7 +80,7 @@ An ongoing effort to make Koopmans functional calculations straightforward for n
 
 - easy installation
 - automated workflows
-- minimal input required of the user #pause
+- minimal input required of the user
 
 For more details, go to `koopmans-functionals.org`
 
@@ -105,7 +95,7 @@ For more details, go to `koopmans-functionals.org`
 
 = Automated Wannierisation
 
-== The three pillars of automated Wannierisation
+== The key ingredients of automated Wannierisation
 
 #grid(
   columns: (2fr, 2fr, 3fr),
@@ -147,6 +137,8 @@ $
   alpha_i = (angle.l n_i mid(|) epsilon^(-1) f_"Hxc" mid(|) n_i angle.r) / (angle.l n_i mid(|) f_"Hxc" mid(|) n_i angle.r)
 $
 
+#pause
+
 - a local measure of the degree by which electronic interactions are screened #pause
 - one screening parameter per (non-equivalent) orbital #pause
 - must be computed #emph[ab intio] via $Delta$SCF@Nguyen2018@DeGennaro2022a or DFPT@Colonna2018@Colonna2022 #pause
@@ -154,89 +146,99 @@ $
 
 == The machine-learning framework
 
-#align(
-  center,
-  grid(
-    columns: 5,
-    align: horizon,
-    gutter: 1em,
-    image("figures/orbital.emp.00191_cropped.png", height: 50%),
-    xarrow("power spectrum decomposition"),
-    $vec(delim: "[", x_0, x_1, x_2, dots.v)$,
-    xarrow("ridge regression"),
-    $alpha_i$,
-  ),
-)
-
-$
-  c^i_(n l m, k) & = integral dif bold(r) g_(n l) (r) Y_(l m)(theta,phi) n^i (
-    bold(r) - bold(R)^i
+#slide[
+  #align(
+    center,
+    grid(
+      columns: 5,
+      align: horizon,
+      gutter: 1em,
+      image("figures/orbital.emp.00191_cropped.png", height: 30%),
+      xarrow("power spectrum decomposition"),
+      $vec(delim: "[", x_0, x_1, x_2, dots.v)$,
+      xarrow("ridge regression"),
+      $alpha_i$,
+    ),
   )
-$
+
+  $
+    c^i_(n l m, k) & = integral dif bold(r) g_(n l) (r) Y_(l m)(theta,phi) n^i (
+      bold(r) - bold(R)^i
+    )
+  $
 
 
-$
-  p^i_(n_1 n_2 l,k_1 k_2) = pi sqrt(8 / (2l+1)) sum_m c_(n_1 l m,k_1)^(i *) c_(n_2 l m,k_2)^i
-$
+  $
+    p^i_(n_1 n_2 l,k_1 k_2) = pi sqrt(8 / (2l+1)) sum_m c_(n_1 l m,k_1)^(i *) c_(n_2 l m,k_2)^i
+  $
+
+  #blcite(<Schubert2024>)
+]
 
 == Two test systems
 
-#align(
-  center,
-  grid(
-    columns: 2,
+#slide[
+  #align(
+    center,
+    grid(
+      columns: 2,
+      align: horizon + center,
+      gutter: 1em,
+      image("figures/water.png", height: 70%),
+      image("figures/CsSnI3_disordered.png", height: 70%),
+
+      "water", "CsSnI" + sub("3"),
+    ),
+  )
+  #blcite(<Schubert2024>)
+]
+
+== Results: screening parameters
+
+#slide[
+  #grid(
+    columns: (1fr, 1fr),
     align: horizon + center,
     gutter: 1em,
-    image("figures/water.png", height: 70%),
-    image("figures/CsSnI3_disordered.png", height: 70%),
+    image(
+      "figures/water_cls_calc_vs_pred_and_hist_bottom_panel_alphas.svg",
+      height: 70%,
+    ),
+    image(
+      "figures/CsSnI3_calc_vs_pred_and_hist_bottom_panel_alphas.svg",
+      height: 70%,
+    ),
 
     "water", "CsSnI" + sub("3"),
-  ),
-)
-
-== Results
-
-#slide[
-  #image(
-    "figures/water_cls_calc_vs_pred_and_hist_bottom_panel.svg",
-    width: 100%,
   )
   #blcite(<Schubert2024>)
 ]
 
-#slide[
-  #image("figures/CsSnI3_calc_vs_pred_and_hist_bottom_panel.svg", width: 100%)
-  #blcite(<Schubert2024>)
-]
+== Results: balancing accuracy and speedup
 
 #slide[
-  #align(
-    center + horizon,
+  #grid(
+    columns: (1fr, 1fr),
+    align: center + horizon,
+    gutter: 1em,
     image(
       "figures/convergence_analysis_Eg_only.svg",
-      height: 70%,
-    ) + "accurate to within " + $cal("O")$ + "(10 meV) " + emph("cf.") + " typical band gap accuracy of " + $cal("O")$ + "(100 meV)",
+      height: 60%,
+    ),
+    image("figures/speedup.svg", height: 60%),
+
+    "accurate to within " + $cal("O")$ + "(10 meV) " + emph("cf.") + " typical band gap accuracy of " + $cal("O")$ + "(100 meV)",
+    "speedup of " + $cal("O")$ + "(10) to " + $cal("O")$ + "(100)",
   )
   #blcite(<Schubert2024>)
 ]
-
-#slide[
-  #align(
-    center + horizon,
-    image(
-      "figures/speedup.svg",
-      height: 70%,
-    ) + "speedup of " + $cal("O")$ + "(10) to " + $cal("O")$ + "(100)",
-  )
-  #blcite(<Schubert2024>)
-]
-
 
 = Integration with `AiiDA`
 
 == Integration with `AiiDA`
 
-Work is ongoing to interface `koopmans` with `AiiDA`, which would allow for...
+Work has begun to interface `koopmans` with `AiiDA`, which would allow for...
+#pause
 
 - remote execution #pause
 - parallel execution #pause
@@ -247,7 +249,9 @@ Work is ongoing to interface `koopmans` with `AiiDA`, which would allow for...
 
 The strategy we are employing...
 - requires a moderate amount of refactoring #pause
-- will not change `koopmans`' user interface
+- will not change `koopmans`' user interface #pause
+
+Watch this space!
 
 = Summary
 
